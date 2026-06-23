@@ -4,10 +4,45 @@ Haskell development skills and hooks for Codex.
 
 ## Installation
 
-Install this repository as a local Codex plugin, or publish it through a Codex marketplace entry that points at this plugin directory.
+Install this repository as a local Codex plugin through a Codex marketplace entry.
 
 ```bash
 git clone git@github.com:birdgg/haskell-plugin.git
+cd haskell-plugin
+```
+
+This repository includes a local marketplace definition at `local-marketplace/marketplace.json`.
+
+The marketplace exposes this plugin as `haskell-plugin@haskell-local` through `local-marketplace/plugins/haskell-plugin`, which is a symlink back to the repository root.
+
+Register the marketplace with Codex:
+
+```bash
+codex plugin marketplace add "$PWD/local-marketplace"
+```
+
+Install the plugin:
+
+```bash
+codex plugin add haskell-plugin@haskell-local
+```
+
+Verify the install:
+
+```bash
+codex plugin list --marketplace haskell-local --available --json
+```
+
+The plugin should show `installed: true` and `enabled: true`. Start a new Codex session or thread after installation so the bundled skills and hooks are loaded cleanly.
+
+### Updating a local install
+
+Codex installs a cached copy of the plugin under `~/.codex/plugins/cache/`.
+
+After changing plugin files, reinstall the plugin so Codex refreshes that cache:
+
+```bash
+codex plugin add haskell-plugin@haskell-local
 ```
 
 ## Components
@@ -88,5 +123,9 @@ haskell-plugin/
 │           └── servant-client-examples.md
 ├── hooks/
 │   └── hooks.json
+├── local-marketplace/
+│   ├── marketplace.json
+│   └── plugins/
+│       └── haskell-plugin -> ../..
 └── README.md
 ```
